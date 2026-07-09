@@ -1,1 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo Industrial · Redes e Topologias</title>
+  <!-- Font Awesome para ícones auxiliares -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Reset e base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+      background: #eef3f8;
+      color: #0b1a2b;
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Tema escuro */
+    body.dark {
+      background: #0b1422;
+      color: #e8edf5;
+    }
+
+    body.dark .card,
+    body.dark .info-box,
+    body.dark .topo-card,
+    body.dark .cookie-banner {
+      background: #182235;
+      border-color: #2a3a52;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark .tab-btn {
+      background: #101a2a;
+      color: #8fa0bd;
+    }
+
+    body.dark .tab-btn.active {
+      background: #1f3148;
+      color: #b7d9ff;
+      border-bottom: 3px solid #4a9eff;
+    }
+
+    body.dark .footer {
+      background: #0f1a2a;
+      border-top: 1px solid #1e3048;
+    }
+
+    body.dark .lang-btn,
+    body.dark .theme-toggle {
+      background: #182235;
+      border-color: #2a3a52;
+      color: #cbd5e1;
+    }
+
+    body.dark .lang-btn:hover,
+    body.dark .theme-toggle:hover {
+      background: #24344e;
+    }
+
+    body.dark .card p,
+    body.dark .info-box p {
+      color: #cbd9ed;
+    }
+
+    body.dark .vantagens li i {
+      color: #6aaaff;
+    }
+
+    /* Layout principal */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      gap: 1rem;
+    }
+
+    .logo h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(145deg, #005a8c, #0080c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo h1 i {
+      -webkit-text-fill-color: initial;
+      color: #0077b6;
+      background: none;
+      font-size: 1.8rem;
+    }
+
+    body.dark .logo h1 {
+      background: linear-gradient(145deg, #6aaaff, #3d8eff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    body.dark .logo h1 i {
+      color: #5a9eff;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .lang-btn {
+      background: #ffffff;
+      border: 1px solid #c8d6e5;
+      padding: 0.45rem 0.9rem;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #1e293b;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .lang-btn i {
+      font-size: 0.85rem;
+    }
+
+    .lang-btn:hover {
+      background: #e6edf5;
+      transform: scale(1.03);
+    }
+
+    .theme-toggle {
+      background: #ffffff;
+      border: 1px solid #c8d6e5;
+      padding: 0.45rem 1rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #1e293b;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .theme-toggle:hover {
+      background: #e6edf5;
+    }
+
+    /* Abas */
+    .tabs {
+      display: flex;
+      gap: 0.3rem;
+      border-bottom: 2px solid #c8d8e8;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 40px 40px 0 0;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #2c405a;
+      letter-spacing: 0.2px;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: #005f96;
+      border-bottom: 3px solid #0080c0;
+      box-shadow: 0 -4px 12px rgba(0, 80, 150, 0.06);
+    }
+
+    body.dark .tab-btn.active {
+      background: #182235;
+      color: #b0d0ff;
+      border-bottom: 3px solid #4a9eff;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      0% { opacity: 0.3; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards cabos */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 2rem 1.5rem 1.8rem;
+      box-shadow: 0 10px 30px rgba(0, 30, 60, 0.06);
+      border: 1px solid #dde8f2;
+      transition: all 0.25s;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px rgba(0, 50, 100, 0.10);
+      border-color: #8db4d4;
+    }
+
+    .card .icon-wrapper {
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.2rem;
+      background: #f0f6fc;
+      border: 2px solid #dde8f2;
+      padding: 8px;
+      transition: 0.3s;
+    }
+
+    .card:hover .icon-wrapper {
+      border-color: #0077b6;
+      box-shadow: 0 4px 12px rgba(0, 119, 182, 0.15);
+    }
+
+    body.dark .card .icon-wrapper {
+      background: #1a2a3f;
+      border-color: #2a3a52;
+    }
+
+    .card .icon-wrapper svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .card h3 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-top: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #2c405a;
+      line-height: 1.5;
+      margin-top: 0.1rem;
+    }
+
+    .card .detalhe {
+      font-size: 0.8rem;
+      color: #005f96;
+      background: #e6f0fa;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      margin-top: 0.4rem;
+      font-weight: 500;
+    }
+
+    body.dark .card .detalhe {
+      background: #1f3150;
+      color: #8bb9ff;
+    }
+
+    .info-box {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 1.8rem 2.2rem;
+      margin: 1.8rem 0 0.5rem;
+      border: 1px solid #dde8f2;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+      transition: 0.2s;
+      min-height: 120px;
+    }
+
+    .info-box h4 {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #005f96;
+    }
+
+    body.dark .info-box h4 {
+      color: #8bb9ff;
+    }
+
+    .info-box p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #0b1a2b;
+    }
+
+    /* Topologias */
+    .topo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      margin: 1.5rem 0 1.8rem;
+    }
+
+    .topo-card {
+      background: #ffffff;
+      border-radius: 30px;
+      padding: 1.8rem 2.2rem;
+      border: 1px solid #dde8f2;
+      flex: 1 1 200px;
+      box-shadow: 0 6px 18px rgba(0, 20, 40, 0.02);
+      cursor: pointer;
+      transition: 0.25s;
+      text-align: center;
+    }
+
+    .topo-card:hover {
+      transform: scale(1.02);
+      border-color: #8db4d4;
+      box-shadow: 0 12px 28px rgba(0, 40, 80, 0.06);
+    }
+
+    .topo-card i {
+      font-size: 2.4rem;
+      color: #0077b6;
+      background: #e3effa;
+      padding: 0.7rem;
+      border-radius: 50px;
+      width: 66px;
+      height: 66px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.4rem;
+    }
+
+    body.dark .topo-card i {
+      background: #1f3150;
+      color: #6aaaff;
+    }
+
+    .topo-card h3 {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .topo-card p {
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    .vantagens {
+      margin-top: 1.5rem;
+      padding-left: 0.5rem;
+      list-style: none;
+    }
+
+    .vantagens li {
+      padding: 0.4rem 0;
+      display: flex;
+      gap: 0.7rem;
+      align-items: baseline;
+    }
+
+    .vantagens li i {
+      color: #0077b6;
+      width: 1.3rem;
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 3.5rem;
+      padding: 2rem 1.8rem 1.8rem;
+      background: #ffffff;
+      border-top: 1px solid #c8d8e8;
+      border-radius: 40px 40px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-info span {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .footer-info i {
+      color: #0077b6;
+      width: 1.3rem;
+    }
+
+    body.dark .footer-info i {
+      color: #6aaaff;
+    }
+
+    .footer small {
+      opacity: 0.7;
+      font-size: 0.8rem;
+    }
+
+    /* Cookie */
+    .cookie-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      max-width: 460px;
+      background: #ffffff;
+      padding: 1.2rem 2rem;
+      border-radius: 60px;
+      box-shadow: 0 14px 44px rgba(0, 0, 0, 0.10);
+      border: 1px solid #d0dce8;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      z-index: 999;
+      backdrop-filter: blur(4px);
+      transition: 0.3s;
+    }
+
+    .cookie-banner p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .cookie-btn {
+      background: #0077b6;
+      border: none;
+      padding: 0.5rem 1.6rem;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .cookie-btn:hover {
+      background: #005a8c;
+      transform: scale(1.03);
+    }
+
+    /* Responsividade */
+    @media (max-width: 700px) {
+      .container { padding: 1rem; }
+      .logo h1 { font-size: 1.5rem; }
+      .tab-btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+      .card-grid { grid-template-columns: 1fr 1fr; }
+      .footer { flex-direction: column; align-items: flex-start; }
+      .cookie-banner { max-width: 100%; border-radius: 30px; }
+    }
+    @media (max-width: 480px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .topo-grid { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <h1><i class="fas fa-industry"></i> Catálogo Industrial</h1>
+      </div>
+      <div class="toolbar">
+        <button class="lang-btn" data-lang="pt"><i class="fas fa-language"></i> PT</button>
+        <button class="lang-btn" data-lang="en"><i class="fas fa-language"></i> EN</button>
+        <button class="lang-btn" data-lang="es"><i class="fas fa-language"></i> ES</button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+      </div>
+    </header>
+
+    <!-- Abas -->
+    <div class="tabs" id="tabHeaders">
+      <button class="tab-btn active" data-tab="tab1"><i class="fas fa-network-wired" style="margin-right:8px;"></i> <span data-key="cabos">Cabos Industriais</span></button>
+      <button class="tab-btn" data-tab="tab2"><i class="fas fa-sitemap" style="margin-right:8px;"></i> <span data-key="topologias">Topologias</span></button>
+    </div>
+
+    <!-- Aba 1: Cabos -->
+    <div id="tab1" class="tab-content active">
+      <div class="card-grid" id="caboCards">
+        <!-- Par Trançado -->
+        <div class="card" data-cabo="trancado">
+          <div class="icon-wrapper">
+            <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cabo -->
+              <rect x="10" y="30" width="80" height="20" rx="4" fill="#4a6a8a" stroke="#2a4a6a" stroke-width="1.5"/>
+              <!-- Pares trançados -->
+              <rect x="18" y="34" width="10" height="4" rx="2" fill="#e74c3c" transform="rotate(-15, 23, 36)"/>
+              <rect x="32" y="34" width="10" height="4" rx="2" fill="#3498db" transform="rotate(10, 37, 36)"/>
+              <rect x="46" y="34" width="10" height="4" rx="2" fill="#2ecc71" transform="rotate(-8, 51, 36)"/>
+              <rect x="60" y="34" width="10" height="4" rx="2" fill="#f39c12" transform="rotate(12, 65, 36)"/>
+              <rect x="74" y="34" width="10" height="4" rx="2" fill="#9b59b6" transform="rotate(-5, 79, 36)"/>
+              <!-- Segundo par -->
+              <rect x="18" y="42" width="10" height="4" rx="2" fill="#e74c3c" transform="rotate(12, 23, 44)"/>
+              <rect x="32" y="42" width="10" height="4" rx="2" fill="#3498db" transform="rotate(-10, 37, 44)"/>
+              <rect x="46" y="42" width="10" height="4" rx="2" fill="#2ecc71" transform="rotate(8, 51, 44)"/>
+              <rect x="60" y="42" width="10" height="4" rx="2" fill="#f39c12" transform="rotate(-12, 65, 44)"/>
+              <rect x="74" y="42" width="10" height="4" rx="2" fill="#9b59b6" transform="rotate(5, 79, 44)"/>
+              <!-- Conectores RJ45 -->
+              <rect x="2" y="28" width="10" height="24" rx="2" fill="#d4a373" stroke="#b8865a" stroke-width="1"/>
+              <rect x="88" y="28" width="10" height="24" rx="2" fill="#d4a373" stroke="#b8865a" stroke-width="1"/>
+              <!-- Detalhes conector -->
+              <rect x="3" y="33" width="8" height="2" rx="1" fill="#b8865a"/>
+              <rect x="3" y="38" width="8" height="2" rx="1" fill="#b8865a"/>
+              <rect x="3" y="43" width="8" height="2" rx="1" fill="#b8865a"/>
+              <rect x="89" y="33" width="8" height="2" rx="1" fill="#b8865a"/>
+              <rect x="89" y="38" width="8" height="2" rx="1" fill="#b8865a"/>
+              <rect x="89" y="43" width="8" height="2" rx="1" fill="#b8865a"/>
+              <!-- Texto CAT5e -->
+              <text x="50" y="68" font-size="10" text-anchor="middle" fill="#4a6a8a" font-weight="600">CAT5e</text>
+            </svg>
+          </div>
+          <h3>Par Trançado</h3>
+          <p data-key="trancado_desc">Cabo de rede comum (Ethernet/Profinet).</p>
+          <span class="detalhe" data-key="trancado_det">🔌 CLP · Supervisório</span>
+        </div>
+
+        <!-- Fibra Óptica -->
+        <div class="card" data-cabo="fibra">
+          <div class="icon-wrapper">
+            <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cabo externo -->
+              <rect x="10" y="30" width="80" height="20" rx="8" fill="#2a2a3a" stroke="#4a4a5a" stroke-width="1.5"/>
+              <!-- Revestimento interno -->
+              <rect x="18" y="34" width="64" height="12" rx="4" fill="#3a3a4a" stroke="#5a5a6a" stroke-width="1"/>
+              <!-- Capa de proteção -->
+              <rect x="22" y="36" width="56" height="8" rx="2" fill="#4a5a7a" stroke="#6a7a9a" stroke-width="0.5"/>
+              <!-- Núcleo de fibra (luz) -->
+              <rect x="26" y="38" width="48" height="4" rx="2" fill="#00ccff" opacity="0.9"/>
+              <!-- Brilho da luz -->
+              <rect x="28" y="38.5" width="44" height="3" rx="1.5" fill="#66ddff" opacity="0.6"/>
+              <!-- Pontos de luz pulsantes -->
+              <circle cx="30" cy="40" r="3" fill="#00ddff" opacity="0.8">
+                <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="50" cy="40" r="3" fill="#00ddff" opacity="0.8">
+                <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="0.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="70" cy="40" r="3" fill="#00ddff" opacity="0.8">
+                <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="1s" repeatCount="indefinite"/>
+              </circle>
+              <!-- Conectores LC -->
+              <rect x="2" y="28" width="12" height="24" rx="2" fill="#4a6a8a" stroke="#6a8aaa" stroke-width="1"/>
+              <rect x="86" y="28" width="12" height="24" rx="2" fill="#4a6a8a" stroke="#6a8aaa" stroke-width="1"/>
+              <rect x="4" y="34" width="8" height="12" rx="1" fill="#00ccff" opacity="0.5"/>
+              <rect x="88" y="34" width="8" height="12" rx="1" fill="#00ccff" opacity="0.5"/>
+              <!-- Texto -->
+              <text x="50" y="68" font-size="9" text-anchor="middle" fill="#8a9aaa" font-weight="600">FIBRA ÓPTICA</text>
+            </svg>
+          </div>
+          <h3>Fibra Óptica</h3>
+          <p data-key="fibra_desc">O cabo de vidro. Longas distâncias sem interferência.</p>
+          <span class="detalhe" data-key="fibra_det">⚡ Isento de EMI · até 40km</span>
+        </div>
+
+        <!-- Wireless -->
+        <div class="card" data-cabo="wireless">
+          <div class="icon-wrapper">
+            <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- Antena -->
+              <rect x="46" y="15" width="8" height="25" rx="2" fill="#4a6a8a" stroke="#2a4a6a" stroke-width="1"/>
+              <!-- Base da antena -->
+              <rect x="40" y="38" width="20" height="6" rx="2" fill="#3a5a7a" stroke="#2a4a6a" stroke-width="1"/>
+              <!-- Onda 1 -->
+              <path d="M30 50 Q40 40 50 50 Q60 40 70 50" stroke="#0077b6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Onda 2 -->
+              <path d="M22 58 Q35 45 50 58 Q65 45 78 58" stroke="#0077b6" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+              <!-- Onda 3 -->
+              <path d="M14 66 Q30 50 50 66 Q70 50 86 66" stroke="#0077b6" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+              <!-- Dispositivo/sensor -->
+              <rect x="35" y="58" width="30" height="16" rx="4" fill="#3a5a7a" stroke="#2a4a6a" stroke-width="1"/>
+              <rect x="40" y="61" width="20" height="4" rx="2" fill="#2ecc71" opacity="0.8"/>
+              <rect x="40" y="67" width="14" height="4" rx="2" fill="#e74c3c" opacity="0.5"/>
+              <!-- Led piscando -->
+              <circle cx="60" cy="62" r="2" fill="#2ecc71">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
+              </circle>
+              <!-- Texto -->
+              <text x="50" y="80" font-size="9" text-anchor="middle" fill="#4a6a8a" font-weight="600">WIRELESS</text>
+            </svg>
+          </div>
+          <h3>Wireless</h3>
+          <p data-key="wireless_desc">Rede sem fio para sensores móveis ou difícil acesso.</p>
+          <span class="detalhe" data-key="wireless_det">📡 I/O remoto · AGV · robôs</span>
+        </div>
+      </div>
+      <div class="info-box" id="caboInfo">
+        <h4><i class="fas fa-microchip"></i> <span data-key="info_titulo">Clique em um cabo</span></h4>
+        <p id="caboDesc" data-key="info_padrao">Selecione um dos cabos acima para ver detalhes de aplicação na fábrica.</p>
+        <div id="caboExtra" style="margin-top:0.8rem; font-size:0.95rem; opacity:0.85;"></div>
+      </div>
+    </div>
+
+    <!-- Aba 2: Topologias -->
+    <div id="tab2" class="tab-content">
+      <div class="topo-grid">
+        <div class="topo-card" data-topo="estrela">
+          <i class="fas fa-star"></i>
+          <h3 data-key="estrela_tit">Rede em Estrela</h3>
+          <p data-key="estrela_sub">Switch central</p>
+        </div>
+        <div class="topo-card" data-topo="barramento">
+          <i class="fas fa-grip-lines"></i>
+          <h3 data-key="barramento_tit">Rede em Barramento</h3>
+          <p data-key="barramento_sub">Linha contínua</p>
+        </div>
+      </div>
+      <div class="info-box" id="topoInfo">
+        <h4><i class="fas fa-diagram-project"></i> <span data-key="topo_info_titulo">Detalhes da Topologia</span></h4>
+        <div id="topoDesc">
+          <p data-key="topo_padrao">Escolha um layout para ver vantagens e desvantagens.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-info">
+        <span><i class="fas fa-envelope"></i> isabellihoffmann@gmail.com</span>
+        <span><i class="fas fa-phone-alt"></i> (51) 91234-5678</span>
+        <span><i class="fas fa-building"></i> Catálogos Industriais</span>
+      </div>
+      <small>© 2026 · SENAI CETEMP · Automação Industrial</small>
+    </footer>
+  </div>
+
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p><i class="fas fa-cookie-bite" style="margin-right:8px;"></i> <span data-key="cookie_text">Aceite cookies para melhor experiência.</span></p>
+    <button class="cookie-btn" id="acceptCookies"><span data-key="cookie_btn">Aceitar</span></button>
+  </div>
+
+  <script>
+    (function() {
+      // ---- DADOS ----
+      const dados = {
+        pt: {
+          cabos: {
+            trancado: "Cabo de rede comum (Ethernet/Profinet). Usado para ligar o CLP ao computador do supervisor e à IHM.",
+            fibra: "O cabo de vidro. Usado para levar dados a longas distâncias na fábrica sem sofrer com a interferência dos motores elétricos (EMI). Ideal para backbone e redes de alta velocidade.",
+            wireless: "Rede sem fio. Usado para monitorar sensores que ficam em locais móveis, AGVs, robôs colaborativos ou áreas de difícil acesso."
+          },
+          extra: {
+            trancado: "🔹 Aplicação: CLP, IHM, drives, redes Profinet e Ethernet/IP. Distância máxima: 100m (com repetidor).",
+            fibra: "🔹 Aplicação: Backbone de fábrica, interligação de armários, redes com até 40km. Imune a ruídos elétricos.",
+            wireless: "🔹 Aplicação: Sensores remotos, AGV, robôs móveis, leitura de códigos, redes temporárias."
+          },
+          topologias: {
+            estrela: "Todas as máquinas ligam em um aparelho central (Switch). Se uma máquina estragar, as outras continuam funcionando normal.",
+            barramento: "As máquinas são ligadas uma na outra em linha (como vagões de trem). Se o cabo partir no meio, metade da fábrica para."
+          },
+          vantagens: {
+            estrela: ["⭐ Manutenção isolada: falha em um nó não afeta os outros.", "🔌 Facilidade de expansão: basta conectar ao switch.", "📊 Monitoramento centralizado e fácil diagnóstico."],
+            barramento: ["📡 Baixo custo de cabeamento.", "🔗 Simples de implementar em pequenas redes.", "🔄 Menos equipamentos ativos (sem switch)."]
+          },
+          desvantagens: {
+            estrela: ["⚠️ Ponto único de falha: se o switch falha, toda a rede para.", "💰 Custo maior com switch e cabeamento estruturado."],
+            barramento: ["⛓️ Se o cabo rompe, parte da rede fica isolada.", "🐌 Degradação com muitos nós e tráfego intenso."]
+          }
+        },
+        en: {
+          cabos: {
+            trancado: "Common network cable (Ethernet/Profinet). Used to connect PLC to supervisor computer and HMI.",
+            fibra: "The glass cable. Used for long-distance data in the factory without motor interference (EMI). Ideal for backbone and high-speed networks.",
+            wireless: "Wireless network. Used to monitor sensors in mobile locations, AGVs, collaborative robots or hard-to-reach areas."
+          },
+          extra: {
+            trancado: "🔹 Application: PLC, HMI, drives, Profinet and Ethernet/IP networks. Max distance: 100m (with repeater).",
+            fibra: "🔹 Application: Factory backbone, cabinet interconnection, networks up to 40km. Immune to electrical noise.",
+            wireless: "🔹 Application: Remote sensors, AGV, mobile robots, code reading, temporary networks."
+          },
+          topologias: {
+            estrela: "All machines connect to a central device (Switch). If one machine fails, others keep running.",
+            barramento: "Machines are daisy-chained (like train cars). If the cable breaks in the middle, half the factory stops."
+          },
+          vantagens: {
+            estrela: ["⭐ Isolated maintenance: a node failure doesn't affect others.", "🔌 Easy expansion: just connect to the switch.", "📊 Centralized monitoring and easy diagnosis."],
+            barramento: ["📡 Low cabling cost.", "🔗 Simple to implement in small networks.", "🔄 Fewer active devices (no switch)."]
+          },
+          desvantagens: {
+            estrela: ["⚠️ Single point of failure: if the switch fails, the whole network stops.", "💰 Higher cost with switch and structured cabling."],
+            barramento: ["⛓️ If the cable breaks, part of the network is isolated.", "🐌 Degradation with many nodes and heavy traffic."]
+          }
+        },
+        es: {
+          cabos: {
+            trancado: "Cable de red común (Ethernet/Profinet). Se usa para conectar el PLC al computador del supervisor y a la IHM.",
+            fibra: "El cable de vidrio. Se usa para datos a larga distancia en la fábrica sin interferencia de motores (EMI). Ideal para backbone y redes de alta velocidad.",
+            wireless: "Red inalámbrica. Se usa para monitorear sensores en lugares móviles, AGV, robots colaborativos o áreas de difícil acceso."
+          },
+          extra: {
+            trancado: "🔹 Aplicación: PLC, IHM, drives, redes Profinet y Ethernet/IP. Distancia máxima: 100m (con repetidor).",
+            fibra: "🔹 Aplicación: Backbone de fábrica, interconexión de armarios, redes de hasta 40km. Inmune a ruidos eléctricos.",
+            wireless: "🔹 Aplicación: Sensores remotos, AGV, robots móviles, lectura de códigos, redes temporales."
+          },
+          topologias: {
+            estrela: "Todas las máquinas se conectan a un dispositivo central (Switch). Si una falla, las otras siguen funcionando.",
+            barramento: "Las máquinas se conectan en línea (como vagones de tren). Si el cable se rompe, la mitad de la fábrica se detiene."
+          },
+          vantagens: {
+            estrela: ["⭐ Mantenimiento aislado: falla de un nodo no afecta a otros.", "🔌 Fácil expansión: conectar al switch.", "📊 Monitoreo centralizado y diagnóstico fácil."],
+            barramento: ["📡 Bajo costo de cableado.", "🔗 Simple de implementar en redes pequeñas.", "🔄 Menos equipos activos (sin switch)."]
+          },
+          desvantagens: {
+            estrela: ["⚠️ Punto único de fallo: si el switch falla, toda la red se detiene.", "💰 Mayor costo con switch y cableado estructurado."],
+            barramento: ["⛓️ Si el cable se rompe, parte de la red queda aislada.", "🐌 Degradación con muchos nodos y tráfico intenso."]
+          }
+        }
+      };
+
+      let lang = 'pt';
+      let temaEscuro = false;
+      const body = document.body;
+      const themeToggle = document.getElementById('themeToggle');
+      const cookieBanner = document.getElementById('cookieBanner');
+      const acceptBtn = document.getElementById('acceptCookies');
+      const caboDesc = document.getElementById('caboDesc');
+      const caboExtra = document.getElementById('caboExtra');
+      const topoDesc = document.getElementById('topoDesc');
+
+      function aplicarIdioma(langKey) {
+        const data = dados[langKey];
+        if (!data) return;
+
+        document.querySelectorAll('[data-key]').forEach(el => {
+          const key = el.getAttribute('data-key');
+          const map = {
+            cabos: langKey === 'pt' ? 'Cabos Industriais' : langKey === 'en' ? 'Industrial Cables' : 'Cabos Industriales',
+            topologias: langKey === 'pt' ? 'Topologias' : langKey === 'en' ? 'Topologies' : 'Topologías',
+            info_titulo: langKey === 'pt' ? 'Clique em um cabo' : langKey === 'en' ? 'Click a cable' : 'Haga clic en un cable',
+            info_padrao: langKey === 'pt' ? 'Selecione um dos cabos acima para ver detalhes de aplicação na fábrica.' : 
+                          langKey === 'en' ? 'Select one of the cables above to see application details in the factory.' :
+                          'Seleccione uno de los cables para ver detalles de aplicación en la fábrica.',
+            topo_info_titulo: langKey === 'pt' ? 'Detalhes da Topologia' : langKey === 'en' ? 'Topology Details' : 'Detalles de Topología',
+            topo_padrao: langKey === 'pt' ? 'Escolha um layout para ver vantagens e desvantagens.' :
+                          langKey === 'en' ? 'Choose a layout to see advantages and disadvantages.' :
+                          'Elija un diseño para ver ventajas y desventajas.',
+            cookie_text: langKey === 'pt' ? 'Aceite cookies para melhor experiência.' :
+                          langKey === 'en' ? 'Accept cookies for a better experience.' :
+                          'Acepte cookies para una mejor experiencia.',
+            cookie_btn: langKey === 'pt' ? 'Aceitar' : langKey === 'en' ? 'Accept' : 'Aceptar',
+            estrela_tit: langKey === 'pt' ? 'Rede em Estrela' : langKey === 'en' ? 'Star Network' : 'Red en Estrella',
+            barramento_tit: langKey === 'pt' ? 'Rede em Barramento' : langKey === 'en' ? 'Bus Network' : 'Red en Bus',
+            estrela_sub: langKey === 'pt' ? 'Switch central' : langKey === 'en' ? 'Central switch' : 'Switch central',
+            barramento_sub: langKey === 'pt' ? 'Linha contínua' : langKey === 'en' ? 'Continuous line' : 'Línea continua',
+            trancado_det: langKey === 'pt' ? '🔌 CLP · Supervisório' : langKey === 'en' ? '🔌 PLC · HMI' : '🔌 PLC · Supervisión',
+            fibra_det: langKey === 'pt' ? '⚡ Isento de EMI · até 40km' : langKey === 'en' ? '⚡ EMI-free · up to 40km' : '⚡ Libre de EMI · hasta 40km',
+            wireless_det: langKey === 'pt' ? '📡 I/O remoto · AGV · robôs' : langKey === 'en' ? '📡 Remote I/O · AGV · robots' : '📡 I/O remoto · AGV · robots'
+          };
+          if (map[key]) el.textContent = map[key];
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+          const tipo = card.getAttribute('data-cabo');
+          const p = card.querySelector('p');
+          if (tipo && data.cabos[tipo]) p.textContent = data.cabos[tipo];
+        });
+
+        const caboAtivo = document.querySelector('.card.active');
+        if (caboAtivo) {
+          const tipo = caboAtivo.getAttribute('data-cabo');
+          if (tipo && data.cabos[tipo]) {
+            caboDesc.textContent = data.cabos[tipo];
+            caboExtra.textContent = data.extra[tipo] || '';
+          }
+        } else {
+          caboExtra.textContent = '';
+        }
+
+        const topoAtivo = document.querySelector('.topo-card.active');
+        if (topoAtivo) {
+          const tipo = topoAtivo.getAttribute('data-topo');
+          if (tipo) mostrarTopoInfo(tipo, langKey);
+        } else {
+          const padrao = data.topo_padrao || 'Escolha um layout.';
+          topoDesc.innerHTML = `<p>${padrao}</p>`;
+        }
+      }
+
+      function mostrarTopoInfo(tipo, langKey) {
+        const data = dados[langKey];
+        if (!data) return;
+        const topo = data.topologias[tipo];
+        const vantagens = data.vantagens[tipo] || [];
+        const desvantagens = data.desvantagens[tipo] || [];
+
+        let html = `<p style="font-weight:500; margin-bottom:0.8rem;">${topo || ''}</p>`;
+        html += `<div style="display:flex; flex-wrap:wrap; gap:2rem; margin-top:0.8rem;">`;
+        html += `<div><strong>✅ Vantagens</strong><ul class="vantagens">`;
+        vantagens.forEach(v => html += `<li><i class="fas fa-check-circle"></i> ${v}</li>`);
+        html += `</ul></div>`;
+        html += `<div><strong>⚠️ Desvantagens</strong><ul class="vantagens">`;
+        desvantagens.forEach(d => html += `<li><i class="fas fa-exclamation-triangle"></i> ${d}</li>`);
+        html += `</ul></div></div>`;
+        topoDesc.innerHTML = html;
+      }
+
+      // Abas
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          const tabId = this.getAttribute('data-tab');
+          document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+
+      // Cabos
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+          document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+          this.classList.add('active');
+          const tipo = this.getAttribute('data-cabo');
+          const data = dados[lang];
+          if (tipo && data.cabos[tipo]) {
+            caboDesc.textContent = data.cabos[tipo];
+            caboExtra.textContent = data.extra[tipo] || '';
+          }
+        });
+      });
+
+      // Topologias
+      document.querySelectorAll('.topo-card').forEach(card => {
+        card.addEventListener('click', function() {
+          document.querySelectorAll('.topo-card').forEach(c => c.classList.remove('active'));
+          this.classList.add('active');
+          const tipo = this.getAttribute('data-topo');
+          if (tipo) mostrarTopoInfo(tipo, lang);
+        });
+      });
+
+      // Idioma
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const langKey = this.getAttribute('data-lang');
+          lang = langKey;
+          aplicarIdioma(langKey);
+          document.querySelectorAll('.lang-btn').forEach(b => b.style.opacity = '0.7');
+          this.style.opacity = '1';
+        });
+      });
+      document.querySelector('.lang-btn[data-lang="pt"]').style.opacity = '1';
+
+      // Tema
+      themeToggle.addEventListener('click', function() {
+        temaEscuro = !temaEscuro;
+        body.classList.toggle('dark', temaEscuro);
+        this.innerHTML = temaEscuro ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      });
+
+      // Cookie
+      acceptBtn.addEventListener('click', function() {
+        localStorage.setItem('cookieAccepted', 'true');
+        cookieBanner.style.display = 'none';
+      });
+
+      if (localStorage.getItem('cookieAccepted') === 'true') {
+        cookieBanner.style.display = 'none';
+      }
+
+      aplicarIdioma('pt');
+    })();
+  </script>
+</body>
+</html>
